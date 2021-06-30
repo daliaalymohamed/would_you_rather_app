@@ -20,7 +20,6 @@ class Login extends Component {
         this.setState({
           value
         })
-        console.log("value => ", this.state.value)
     }
  
 
@@ -29,7 +28,6 @@ class Login extends Component {
         const { dispatch } = this.props;
         
         e.preventDefault();
-        console.log("user ", this.state.value)
         dispatch(handleChangeAuthedUser({
             value
         }))
@@ -38,7 +36,6 @@ class Login extends Component {
     render() {
         const { value } = this.state;
         const { users } = this.props;
-        console.log(this.props.users)
         
         return (
             <Jumbotron fluid>
