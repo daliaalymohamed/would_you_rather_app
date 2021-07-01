@@ -29,7 +29,7 @@ export class QuestionCardDetail extends Component {
         const { selectedOption } = this.state
         const { dispatch, authedUser } = this.props;
         const { question_id } = this.props.match.params
-        
+        console.log(this.props.authedUser)
         e.preventDefault();
         dispatch(handleAnswerQuestion(
             authedUser,
@@ -101,6 +101,7 @@ const mapStateToProps = ({ users, authedUser, questions}, props) => {
     const question = questions[question_id]
     const author = users[question.author]
     return {
+        authedUser,
         author: author,
         question: question 
                   ? formatQuestion(question, author, authedUser)
