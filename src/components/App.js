@@ -37,7 +37,7 @@ class App extends Component {
                         <Route exact path="/votes/:question_id" component={AnsweredPollResults} />
                         <Route exact path="/add" component={AddQuestion}></Route>
                         <Route exact path="/leaderboard" component={LeaderBoard}></Route>
-                        <Route component={NotFound}></Route>
+                        <Route path="/not-found" component={NotFound}></Route>
                       </Switch>  
                     </div>)
                   }
@@ -53,7 +53,7 @@ class App extends Component {
 const mapStateToProps = ({ authedUser }) => {
   return { 
     loading: authedUser == null,
-    authorized : authedUser != null
+    authorized : authedUser != null,
   }
 }
 

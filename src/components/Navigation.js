@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
-import { handleChangeAuthedUser } from '../actions/authedUser'
-
+import { setAuthedUser } from '../actions/authedUser'
 class Navigation extends Component {
-    logout() {
-        const { disptach, authedUser } = this.props;
+
+    logout = () => {
+        const { dispatch, authedUser } = this.props;
         const authorized = authedUser != null;
         if(authorized) {
-            disptach(handleChangeAuthedUser(null));
+            dispatch(setAuthedUser(null));
             return;
         }
         this.props.history.push('/login')
@@ -19,8 +19,8 @@ class Navigation extends Component {
         const authorized = user ? true : false
 
         return (
-            <>
-                <Nav className="container-fluid" activeKey="/">
+            <Fragment>
+                <Nav className="container-fluid" activeKey="/" style={{justifyContent: "flex-end"}}>
                     <Nav.Item>
                         <Nav.Link as={Link} to="/">Home</Nav.Link>
                     </Nav.Item>
@@ -35,17 +35,15 @@ class Navigation extends Component {
                                 <Nav.Link as={Link} to="/login">Login</Nav.Link>
                         }
                         { (user && authorized) &&
-                                <>
-                                    <span>Hello, </span>
-                                    <img src={user.avatarURL} width='auto' height='30px' alt=''/>
-                                    <span>{user.name}</span>
-                                    <Nav.Link as={Link} to="#" onClick={this.logout}>Logout</Nav.Link>
-                                </>
+                                    <div>
+                                        Hello, <img src={user.avatarURL} width='auto' height='30px' alt=''/> {user.name}
+                                        <Nav.Link as={Link} to="#" onClick={this.logout}>Logout</Nav.Link>
+                                    </div>
                         }
                     </Nav.Item>
                 </Nav>
                 <hr/>
-            </>
+            </Fragment>
         )
     }
 }

@@ -9,16 +9,9 @@ import { Link, withRouter } from 'react-router-dom';
 export class QuestionCard extends Component {
 
     render() {
-        const {author, question, eventKey} = this.props;
+        const {author, question} = this.props;
         const { name, avatarURL } = author;
         const { id, timestamp, optionA, optionB } = question;
-        const showButton = eventKey === 'unanswered' ?  (<Link to={`/questions/${id}`}>
-                                                            <Button variant="primary">View Question</Button>
-                                                        </Link>)
-                                                     : 
-                                                        (<Link to={`/votes/${id}`}>
-                                                            <Button variant="primary">Results</Button>
-                                                        </Link>)  
         return (
             <Card>
                 <Card.Header>{name}</Card.Header>
@@ -33,7 +26,10 @@ export class QuestionCard extends Component {
                     <Card.Text>
                         {optionB}
                     </Card.Text>
-                    {showButton}
+                    <hr/>
+                    <Link to={`/questions/${id}`}>
+                        <Button variant="primary">View Question</Button>
+                    </Link>
                 </Card.Body>
             </Card>
         )

@@ -17,20 +17,23 @@ export const handleInitialData = () => {
 }
 
 // async request... redux thunk pattern
-export const handleAddQuestion = (optionOne, optionTwo, author) => {
-  console.log(author)
-  console.log(optionOne)
-  console.log(optionTwo)
-  return (dispatch, getState) => {
-      dispatch(showLoading())
-      return saveQuestion({optionOne, optionTwo, author})
-          .then( ({optionOne, optionTwo, author}) => {
-              dispatch(addQuestion({optionOne, optionTwo, author}))
-              dispatch(addQuestionToUser({optionOne, optionTwo, author}))
-              dispatch(hideLoading())
-          })
+export function handleAddQuestion(optionOneText, optionTwoText) {
+    return (dispatch, getState) => {
+      const {authedUser: author} = getState();  
+      dispatch(showLoading());
+  
+      return saveQuestion({author, optionOneText, optionTwoText})
+        .then(question => {
+          dispatch(addQuestion(question));
+          dispatch(addQuestionToUser({id: question.id, author}));
+        })
+        .catch(e => {
+          console.warn('Error in saveQuestion: ', e);
+          alert('There was an error saving the question. Please try again.');
+        })
+        .finally(() => dispatch(hideLoading()));
+    }
   }
-}
 
 // async request... redux thunk pattern
 export function handleAnswerQuestion(authedUser, qid, answer) {

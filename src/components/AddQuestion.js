@@ -35,8 +35,8 @@ class AddQuestion extends Component {
         e.preventDefault();
 
         const { optionOne, optionTwo } = this.state;
-        const { dispatch, authedUser } = this.props;
-        dispatch(handleAddQuestion(optionOne, optionTwo, authedUser))
+        const { dispatch } = this.props;
+        dispatch(handleAddQuestion(optionOne, optionTwo))
         this.setState({
             optionOne: '',
             optionTwo: '',
@@ -46,7 +46,6 @@ class AddQuestion extends Component {
 
     render() {
         const { optionOne, optionTwo, toHome } = this.state;
-        console.log(this.state.optionOne)
 
         // redirect to home view if submitted
         if(toHome === true) {
@@ -84,7 +83,8 @@ class AddQuestion extends Component {
                                                 />
                                             </div>
                                     </Card.Body>
-                                    <Button type="submit" variant="primary" disabled={optionOne === '' || optionTwo === ''}>Submit Question</Button>    
+                                    <hr/>
+                                    <Button type="submit" variant="primary" disabled={optionOne === '' || optionTwo === '' || optionOne === optionTwo}>Submit Question</Button>    
                                 </Card.Body>
                             </Card>
                         </Form>

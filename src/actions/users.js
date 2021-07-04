@@ -9,10 +9,12 @@ export const receiveUsers = (users) => {
     }
 }
 
-export function addQuestionToUser(question) {
+export function addQuestionToUser({id, author}) {
+    console.log({id, author})
     return {
         type: ADD_QUESTION_TO_USER,
-        question
+        id,
+        author
     }
 }
 
