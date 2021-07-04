@@ -12,50 +12,46 @@ import AnsweredPollResults from './AnsweredPollResults';
 export class QuestionCardDetail extends Component {
 
     render() {
-        const {author, questionExists, isAnswered, question_id} = this.props;
-        const { name, avatarURL } = author;
-    
-        if(questionExists) {
-            return (
-                <Container>   
-                    <Row className="justify-content-md-center">
-                        <Col lg="5">
-                            <Card>
-                                <Card.Header>{name}</Card.Header>
-                                <Card.Img variant="top" src={avatarURL} />
-                                <Card.Body className="text-center">
-                                    <Card.Title>Would you rather ...</Card.Title>
-                                    <Card.Body className="text-center">
-                                        {
-                                            isAnswered && (
-                                                <AnsweredPollResults question_id={question_id}/>
-                                            )
-                                        }
-                                        {
-                                            !isAnswered && (
-                                                <QuestionForm question_id={question_id}/>
-                                            )
-                                        }
-                                    </Card.Body>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    </Row>    
-                </Container>
-            )
-        } else {
+        const {author, isAnswered, question, question_id} = this.props;
+
+        if(!question)
             return(
                 <Redirect to="/not-found"/>
             )
-        }
+        const { name, avatarURL } = author;
+    
+        return (
+            <Container>   
+                <Row className="justify-content-md-center">
+                    <Col lg="5">
+                        <Card>
+                            <Card.Header>{name}</Card.Header>
+                            <Card.Img variant="top" src={avatarURL} />
+                            <Card.Body className="text-center">
+                                <Card.Title>Would you rather ...</Card.Title>
+                                <Card.Body className="text-center">
+                                    {
+                                        isAnswered 
+                                        ?
+                                            <AnsweredPollResults question_id={question_id}/>
+                                        : 
+                                            <QuestionForm question_id={question_id}/>
+                                    }
+                                    
+                                </Card.Body>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>    
+            </Container>
+        )
     }
 }
 
 const mapStateToProps = ({ users, authedUser, questions}, props) => {
     const { question_id } = props.match.params
     const question = questions[question_id]
-    const author = users[question.author]
-    const questionExists = !question ? false : true;
+    const author = question ? users[question.author] : null
 
     return {
         authedUser,
@@ -64,8 +60,9 @@ const mapStateToProps = ({ users, authedUser, questions}, props) => {
                   ? formatQuestion(question, author, authedUser)
                   : null,
         question_id,
-        questionExists ,         
-        isAnswered: question.optionOne.votes.includes(authedUser) || question.optionTwo.votes.includes(authedUser) ? true : false
+        isAnswered: question 
+                    ? question.optionOne.votes.includes(authedUser) || question.optionTwo.votes.includes(authedUser) ? true : false
+                    : null
     }
 }
 
